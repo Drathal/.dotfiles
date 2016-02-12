@@ -58,7 +58,7 @@ __nodeversion(){
 
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
-source ~/.git-prompt.sh
+source ~/git-prompt.sh
 
 COLOR_GREEN='\033[32m'
 COLOR_PURPLE='\033[35m'
