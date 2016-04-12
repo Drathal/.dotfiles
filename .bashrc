@@ -1,12 +1,3 @@
-export PATH="${MINGWDIR}:${PATH}"
-export PATH="${MSYSDIR}/bin:${PATH}"
-export PATH="${HOME}/bin:${PATH}"
-export PATH="/c/Program Files/Git/bin:${PATH}"
-export PATH="/c/Program Files/TortoiseHg:${PATH}"
-export PATH="/c/Program Files/Docker Toolbox:${PATH}"
-export PATH="/c/Program Files/nodejs:${PATH}"
-export PATH="~/AppData/Local/atom/bin:${PATH}"
-
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
   eval `ssh-agent`
   ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
@@ -14,9 +5,27 @@ fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 ssh-add -l | grep "The agent has no identities" && ssh-add
 
-#export HOME="/c/Users/minger"
+addpath() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        export PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
+
+addpath "${MINGWDIR}"
+addpath "${MSYSDIR}/bin"
+addpath "${HOME}/bin"
+addpath "${HOME}/code/bin"
+addpath "/c/Program Files/Git/bin"
+addpath "/c/Program Files/TortoiseHg"
+addpath "/c/Program Files/Docker Toolbox"
+addpath "/c/Program Files/nodejs"
+addpath "${HOME}/AppData/Local/atom/bin"
 
 dip() {
+    echo $DOCKER_HOST
+}
+
+dcip() {
   docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
 }
 
@@ -48,7 +57,7 @@ listnode(){
 
 startdocker(){
     cd /c/Program\ Files/Docker\ Toolbox/
-    start.sh
+    . start.sh
     cd ~/code/
 }
 
@@ -56,9 +65,11 @@ __nodeversion(){
     node --version
 }
 
+[ -f "${HOME}/code/cleverbridge_vagrant/src/setup_kubernetes.sh" ] && . ${HOME}/code/cleverbridge_vagrant/src/setup_kubernetes.sh
+
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
-source ~/git-prompt.sh
+. ~/.git-prompt.sh
 
 COLOR_GREEN='\033[32m'
 COLOR_PURPLE='\033[35m'
@@ -74,7 +85,7 @@ PS1="$PS1"'\$ '
 
 echo -e "${COLOR_GREEN} __      __        __                                ________                __   __            __"
 echo -e "/  \    /  \ ____ |  |   ____  ____   _____   ____   \______ \____________ _/  |_|  |__ _____  |  |"
-echo -e "\   \/\/   // __ \|  | _/ ___\/  _ \ /     \_/ __ \   |    |  \_  __ \__   \\\   __\  |  \\\__   \\ |  |"
+echo -e "\   \/\/   // __ \|  | _/ ___\/  _ \ /     \_/ __ \   |    |  \_  __ \__  \\\    __\  |  \\\__   \\ |  |"
 echo -e " \        /\  ___/|  |_\  \__(  (_) )  Y Y  \  ___/   |    \`   \  | \// __ \|  | |   Y  \/ __ \|  |__"
 echo -e "  \__/\  /  \___  >____/\___  >____/|__|_|  /\___  > /_______  /__|  (____  /__| |___|  (____  /____/"
 echo -e "       \/       \/          \/            \/     \/          \/           \/          \/     \/      ${COLOR_NC}"
