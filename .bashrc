@@ -21,6 +21,10 @@ addpath "/c/Program Files/Docker Toolbox"
 addpath "/c/Program Files/nodejs"
 addpath "${HOME}/AppData/Local/atom/bin"
 
+delauth() {
+    rm "~/.ssh/ssh_auth_sock"
+}
+
 dip() {
     echo $DOCKER_HOST
 }
@@ -29,7 +33,7 @@ dcip() {
   docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$@"
 }
 
-dipall() {
+dcipall() {
   docker ps | tail -n +2 | while read -a a; do name=${a[$((${#a[@]}-1))]}; echo -ne "$name\t"; docker inspect --format="{{.NetworkSettings.IPAddress}}" $name | cut -d \" -f 4; done
 }
 
@@ -69,7 +73,7 @@ __nodeversion(){
 
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
-. ~/.git-prompt.sh
+. ~/git-prompt.sh
 
 COLOR_GREEN='\033[32m'
 COLOR_PURPLE='\033[35m'
