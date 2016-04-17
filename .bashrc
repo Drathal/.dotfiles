@@ -21,6 +21,20 @@ addpath "/c/Program Files/Docker Toolbox"
 addpath "/c/Program Files/nodejs"
 addpath "${HOME}/AppData/Local/atom/bin"
 
+initgithub() {
+    if [ -z "$1" ]; then
+        echo please add repository name as argument
+        return 1
+    fi
+    git init
+    git add .
+    git commit -m "init"
+    git remote add origin "git@github.com:Drathal/${1}.git"
+    git remote -v
+    git push origin master
+    git branch --set-upstream-to=origin/master master
+}
+
 delauth() {
     rm "~/.ssh/ssh_auth_sock"
 }
